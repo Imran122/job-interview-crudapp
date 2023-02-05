@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import "./authStyle.css";
-import { useLocation, useNavigate } from "react-router-dom";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { authenticate, isAuth } from "../../utilities/helper";
-import IQCosmos from "../../assets/iqcosmos.png";
 
+import "./authStyle.css";
 const Login = () => {
   const [loginData, setLoginData] = useState({});
   const { user, setUser, isLoading, setIsLoading, setAuthError, authError } =
@@ -71,8 +71,7 @@ const Login = () => {
         <div className="row shadow-lg">
           <div className="col-md-6 d-none d-md-block">
             <div className="lGimg text-center">
-              <img src={IQCosmos} alt="" />
-              <p>Test your Brain High Range IQ Testing</p>
+              <p>Test your CRUD system</p>
             </div>
           </div>
           <div className="col-md-6 bg-white p-5">
@@ -117,15 +116,14 @@ const Login = () => {
               </form>
               <div className="sideline">OR</div>
               <div>
-                <button
-                  type="submit"
+                <Link
+                  to="/signup"
                   className="btn btn-primary w-100 font-weight-bold mt-2"
                 >
-                  <i className="fa fa-facebook" aria-hidden="true"></i> Login
-                  With Facebook
-                </button>
+                  <i className="fa fa-facebook" aria-hidden="true"></i> Go For
+                  SignUp
+                </Link>
               </div>
-              <div className="pt-4 text-center">or Sign Up</div>
             </div>
           </div>
         </div>
