@@ -3,6 +3,18 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import "./authStyle.css";
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}
 const SignUp = () => {
   const customStyles = {
     control: (provided, state) => ({
@@ -47,18 +59,34 @@ const SignUp = () => {
 
     setSignupData(newsignupData);
   };
+  const handelImage = async (e) => {
+    const field = e.target.name;
 
-  console.log("signupData", signupData);
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    const newsignupData = { ...signupData };
+    newsignupData[field] = base64;
+
+    setSignupData(newsignupData);
+  };
+
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const handelLoginSubmit = (event) => {
     event.preventDefault();
-    console.log("role", role);
-    const { name, email, password } = signupData;
+
+    let formData = new FormData();
+    const { name, email, password, profileImage } = signupData;
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profileImage", profileImage);
+    formData.append("role", JSON.stringify(role));
+    console.log("formData", formData);
     axios({
       method: "POST",
       url: `${process.env.REACT_APP_URL_API}/api/signup`,
-      data: { name, email, password, role: role.role },
+      data: formData,
     })
       .then((response) => {
         console.log("SIGNUP SUCCESS", response);
@@ -97,6 +125,7 @@ const SignUp = () => {
                       placeholder="Name"
                       className="form-control"
                       id="exampleInputEmail3"
+                      required
                     />
                   </div>
                   <div className="form-group pb-3">
@@ -107,6 +136,7 @@ const SignUp = () => {
                       placeholder="Email"
                       className="form-control"
                       id="exampleInputEmail1"
+                      required
                     />
                   </div>
                   <div className="form-group pb-3">
@@ -117,16 +147,18 @@ const SignUp = () => {
                       placeholder="Password"
                       className="form-control"
                       id="exampleInputPassword1"
+                      required
                     />
                   </div>
                   <div className="d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center">
                       <input
                         type="file"
-                        name="questionImage"
-                        onBlur={handelOnBlur}
+                        name="profileImage"
+                        onBlur={handelImage}
                         id="file_upload"
-                        accept="image/*,.pdf"
+                        accept="image/*"
+                        required
                       />
                       <span className="pl-2 font-weight-bold">
                         upload profile

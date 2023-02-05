@@ -1,8 +1,24 @@
-import React from "react";
+import { isElementType } from "@testing-library/user-event/dist/utils";
+import React, { useEffect, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { getCookie } from "../../../utilities/helper";
 import "./UserList.css";
 
 const UserListComponent = () => {
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_URL_API}/api/user-list`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setUserList(data));
+  }, []);
+
   return (
     <div className="dashboard-main">
       <div className="row">
@@ -11,6 +27,7 @@ const UserListComponent = () => {
             <table className="table table-border align-items-center">
               <thead class="tbl-thead">
                 <tr>
+                  <th>User Profile</th>
                   <th>User ID</th>
                   <th>User Name</th>
                   <th>User Email</th>
@@ -18,18 +35,24 @@ const UserListComponent = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>001</td>
-                  <td>C0001</td>
-                  <td>U0001</td>
-                  <td>22/01/23 23:40</td>
-                </tr>
-                <tr>
-                  <td>002</td>
-                  <td>C0002</td>
-                  <td>U0002</td>
-                  <td>18/01/23 12:40</td>
-                </tr>
+                {userList.map((user) => (
+                  <tr>
+                    <td>
+                      {user.profileImage ? (
+                        <img src={user.profileImage} className="tableImg" />
+                      ) : (
+                        <img
+                          src="https://app.3schools.in/logo.png"
+                          className="tableImg"
+                        />
+                      )}
+                    </td>
+                    <td>{user._id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

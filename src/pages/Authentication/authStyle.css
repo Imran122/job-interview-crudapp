@@ -109,3 +109,8 @@ input::placeholder {
         margin: 0px auto;
     }
 }
+
+.tableImg{
+    height: 40px;
+    width: 40px;;
+}
