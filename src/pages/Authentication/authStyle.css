@@ -1,0 +1,111 @@
+.loginPage-bg {
+    height: 100vh;
+    background: linear-gradient(180deg, #ECFAF8 0%, #FFFFFF 93.47%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-body {
+    background-color: #ECFAF8;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    padding: 60px;
+    margin: 0px auto;
+}
+
+.lGimg{
+    background-color: #ECFAF8;
+    min-height:100%;
+}
+
+.lGimg img {
+    margin-top: 40%;
+}
+
+.form-style input{
+	border:0;
+	height:50px;
+	border-radius:0;
+border-bottom:1px solid #ebebeb;	
+}
+.form-style input:focus{
+border-bottom:1px solid #007bff;	
+box-shadow:none;
+outline:0;
+background-color:#ebebeb;	
+}
+.sideline {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	color:#ccc;
+}
+
+.sideline:before,
+.sideline:after {
+    content: '';
+    border-top: 1px solid #ebebeb;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+}
+
+.sideline:after {
+    margin: 0 0 0 20px;
+}
+
+.login-dialog {
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 30px;
+}
+
+.input-label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #757575;
+    margin-bottom: 15px;
+}
+
+.login-input {
+    background: #FFFFFF;
+    display: block;
+    width: 100%;
+    border: 1px solid rgba(117, 117, 117, 0.5);
+    margin-bottom: 32px;
+    border-radius: 8px;
+    color: #191919;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 16px;
+    outline: none;
+}
+
+input::placeholder {
+    font-weight: 600;
+    font-size: 16px;
+    color: #757575b3;
+}
+
+.login-button {
+    cursor: pointer;
+    padding: 15px 65px;
+    background: #FF7A00;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 736px) {
+    .login-body {
+        width: 100%;
+        padding: 0;
+        margin: 0px auto;
+    }
+}

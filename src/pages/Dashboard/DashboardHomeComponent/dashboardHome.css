@@ -1,0 +1,77 @@
+.informations{
+    align-items: center;
+    gap: 8px;
+}
+.information{
+    background-color: #3f51b5;
+    border-radius: 4px;
+}
+
+.dashboard-main {
+    width: 100%;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.count-box {
+    padding: 16px;
+    position: relative;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+}
+
+.count-box2{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.count-number {
+    margin: 0;
+    box-sizing: border-box;
+    padding-right: 1rem !important;
+}
+
+.count-number h6{
+    color: #fff;
+    font-size: 1.25rem;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    margin: 0;
+}
+
+.count-number span{
+    color: #fff;
+    font-size: 0.75rem;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+}
+
+.count-icon {
+    margin: 0;
+    box-sizing: border-box;
+    top: 50%;
+    right: 25px;
+    opacity: 0.2;
+    position: absolute;
+    transform: rotate(-5deg);
+    margin-top: -20px;
+}
+
+.count-icon svg {
+    color: #fff;
+    box-shadow: none;
+    overflow: visible;
+    font-size: 1.5rem;
+    text-align: center;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 50%;
+}

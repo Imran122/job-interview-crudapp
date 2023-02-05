@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthProvider from "./context/AuthProvider";
+import Login from "./pages/Authentication/Login";
+import SignUp from "./pages/Authentication/SignUp";
+import DashboardHome from "./pages/Dashboard/DashboardHomeComponent/DashboardHome";
+
+import UserList from "./pages/Dashboard/UserList/UserList ";
+
+import HomeDashboardComponent from "./pages/Dashboard/DashboardHomeComponent/HomeDashboardComponent";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} exact />
+          {/* privet routes */}
+
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardHome />
+              </PrivateRoute>
+            }
+          >
+            {/* dashboard nested route */}
+
+            <Route
+              path="/dashboard/"
+              element={<HomeDashboardComponent />}
+            ></Route>
+            <Route path="/dashboard/user-list" element={<UserList />}></Route>
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
