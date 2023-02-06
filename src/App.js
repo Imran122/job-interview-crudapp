@@ -10,6 +10,7 @@ import UserList from "./pages/Dashboard/UserList/UserList ";
 import HomeDashboardComponent from "./pages/Dashboard/DashboardHomeComponent/HomeDashboardComponent";
 import UserPayment from "./pages/Dashboard/UserPayment/UserPayment";
 import AgentDashboard from "./pages/Dashboard/AgentDashboard/AgentDashboard";
+import Success from "./pages/Dashboard/UserPayment/Success";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               element={<AgentDashboard />}
             ></Route>
           </Route>
+          <Route path="/success" element={<Success />}></Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>

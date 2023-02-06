@@ -1,6 +1,14 @@
 import React from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import "./userpayment.css";
+import CheckoutForm from "./CheckoutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import useAuth from "../../../hooks/useAuth";
+const stripePromise = loadStripe(
+  "pk_test_51L5L5KJPPkc8MG0BYB5ofyV53pnOxyBfsodvNn6Wg7dvsqTeaNPJM9NSDIfPPbvtLVrqF32cxLwzonQ2ynR7GspN00VAHDdS4q"
+);
 const UserPayment = () => {
+  const { user } = useAuth();
   return (
     <div className="payform">
       <div class="w-96 mx-auto border border-gray-400 rounded-lg">
@@ -14,13 +22,13 @@ const UserPayment = () => {
                 for="cc-name"
                 class="text-xs tracking-wide uppercase font-semibold"
               >
-                اسم البطاقة
+                Name
               </label>
               <input
                 id="cc-name"
                 type="text"
                 name="cc-name"
-                placeholder="اسم البطاقة"
+                defaultValue={user.name}
               />
             </div>
 
@@ -29,37 +37,19 @@ const UserPayment = () => {
                 for="cc-number"
                 class="text-xs tracking-wide uppercase font-semibold"
               >
-                رقم البطاقة
+                email
               </label>
               <input
                 id="cc-number"
                 type="text"
                 name="cc-number"
                 class=" h-8 focus:outline-none"
-                placeholder="رقم البطاقة"
+                defaultValue={user.email}
               />
             </div>
-
-            <div class="flex mb-4 px-3 py-1 bg-white rounded-sm border border-gray-300 focus-within:border-gray-500">
-              <div class="w-full focus-within:text-gray-900">
-                <label
-                  for=""
-                  class="text-xs tracking-wide uppercase font-semibold"
-                >
-                  تاريخ الانتهاء
-                </label>
-                <input
-                  id="cc-expiry"
-                  type="text"
-                  class=" h-8 focus:outline-none"
-                  placeholder="MM / YYYY"
-                />
-              </div>
-            </div>
-
-            <button class="text-success h-16 w-full rounded-sm bg-dark tracking-wide font-semibold  hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-600">
-              pay now
-            </button>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm />
+            </Elements>
           </form>
         </div>
       </div>
