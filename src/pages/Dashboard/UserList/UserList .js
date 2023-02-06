@@ -21,7 +21,8 @@ const UserListComponent = () => {
 
   const [userList, setUserList] = useState([]);
   const { user, isLoading, setIsLoading } = useAuth();
-  const [emailFilter, setEmailFilter] = useState([]);
+  const [dataFilter, setDataFilter] = useState([]);
+  const [idFilter, setIdFilter] = useState([]);
   let [selectcategoryID, setCategoryID] = useState(0);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_URL_API}/api/user-list`, {
@@ -34,7 +35,8 @@ const UserListComponent = () => {
       .then((response) => response.json())
       .then((data) => {
         setUserList(data);
-        setEmailFilter(data);
+        setDataFilter(data);
+        setIdFilter(data);
       });
   }, []);
 
@@ -52,7 +54,16 @@ const UserListComponent = () => {
       name: "email",
     });
   }
-
+  //id filter
+  let idListOptions = [];
+  for (let index = 0; index < userList.length; index++) {
+    let element = userList[index];
+    idListOptions.push({
+      value: element._id,
+      label: element._id,
+      name: "_id",
+    });
+  }
   const handleOnSelect = (e) => {
     const field = e.name;
     const value = e.value;
@@ -67,10 +78,21 @@ const UserListComponent = () => {
         (data) => data.email === newData?.email
       );
 
-      setEmailFilter(filterWiseList);
+      setDataFilter(filterWiseList);
       setIsLoading(false);
       if (filterWiseList.length === 0) {
-        setEmailFilter(userList);
+        setDataFilter(userList);
+      }
+    }
+    if (field == "_id") {
+      //console.log("selectcategoryID.carMake", newData.carMake);
+
+      let filterWiseList = userList.filter((data) => data._id === newData?._id);
+
+      setDataFilter(filterWiseList);
+      setIsLoading(false);
+      if (filterWiseList.length === 0) {
+        setDataFilter(userList);
       }
     }
   };
@@ -83,6 +105,15 @@ const UserListComponent = () => {
           <Select
             styles={customStyles}
             options={emailListOptions}
+            onChange={handleOnSelect}
+            className="select-option"
+          />
+        </div>
+        <div className="py-3 mx-auto col col-6">
+          <span className="pl-2 font-weight-bold">Select ID</span>
+          <Select
+            styles={customStyles}
+            options={idListOptions}
             onChange={handleOnSelect}
             className="select-option"
           />
@@ -102,7 +133,7 @@ const UserListComponent = () => {
                 </tr>
               </thead>
               <tbody>
-                {emailFilter.map((user) => (
+                {dataFilter.map((user) => (
                   <tr key={user._id}>
                     <td>
                       {user.profileImage ? (

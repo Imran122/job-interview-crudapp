@@ -66,7 +66,9 @@ const DashboardMenus = () => {
         <span className="menu-icon">
           <IoIosLogIn className="menuIcon" />
         </span>
-        <p className="menu">Log out</p>
+        <p className="menu">
+          Log out {user.name} | {user.role}
+        </p>
       </div>
     </div>
   );
