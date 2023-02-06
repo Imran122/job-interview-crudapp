@@ -1,12 +1,28 @@
-import { isElementType } from "@testing-library/user-event/dist/utils";
+import Select from "react-select";
 import React, { useEffect, useState } from "react";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import useAuth from "../../../hooks/useAuth";
 import { getCookie } from "../../../utilities/helper";
 import "./UserList.css";
 
 const UserListComponent = () => {
-  const [userList, setUserList] = useState([]);
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      background: "#fff",
+      borderColor: "#eaecf0",
 
+      boxShadow: state.isFocused ? null : null,
+      "&:hover": {
+        // Overwrittes the different states of border
+        borderColor: "#eaecf0",
+      },
+    }),
+  };
+
+  const [userList, setUserList] = useState([]);
+  const { user, isLoading, setIsLoading } = useAuth();
+  const [emailFilter, setEmailFilter] = useState([]);
+  let [selectcategoryID, setCategoryID] = useState(0);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_URL_API}/api/user-list`, {
       method: "GET",
@@ -16,11 +32,62 @@ const UserListComponent = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setUserList(data));
+      .then((data) => {
+        setUserList(data);
+        setEmailFilter(data);
+      });
   }, []);
+
+  //filter system apply
+  let uniquelList = [
+    ...new Map(userList.map((item) => [item["email"], item])).values(),
+  ];
+
+  let emailListOptions = [];
+  for (let index = 0; index < uniquelList.length; index++) {
+    let element = uniquelList[index];
+    emailListOptions.push({
+      value: element.email,
+      label: element.email,
+      name: "email",
+    });
+  }
+
+  const handleOnSelect = (e) => {
+    const field = e.name;
+    const value = e.value;
+    const newData = { ...selectcategoryID };
+    newData[field] = value;
+    setIsLoading(true);
+
+    if (field == "email") {
+      //console.log("selectcategoryID.carMake", newData.carMake);
+
+      let filterWiseList = userList.filter(
+        (data) => data.email === newData?.email
+      );
+
+      setEmailFilter(filterWiseList);
+      setIsLoading(false);
+      if (filterWiseList.length === 0) {
+        setEmailFilter(userList);
+      }
+    }
+  };
 
   return (
     <div className="dashboard-main">
+      <div>
+        <div className="py-3 mx-auto col col-6">
+          <span className="pl-2 font-weight-bold">Select Role</span>
+          <Select
+            styles={customStyles}
+            options={emailListOptions}
+            onChange={handleOnSelect}
+            className="select-option"
+          />
+        </div>
+      </div>
       <div className="row">
         <div className="col col-12 col-lg-12">
           <div className="table-responsive box-div mt-4">
@@ -35,8 +102,8 @@ const UserListComponent = () => {
                 </tr>
               </thead>
               <tbody>
-                {userList.map((user) => (
-                  <tr>
+                {emailFilter.map((user) => (
+                  <tr key={user._id}>
                     <td>
                       {user.profileImage ? (
                         <img src={user.profileImage} className="tableImg" />
