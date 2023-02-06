@@ -8,6 +8,8 @@ import DashboardHome from "./pages/Dashboard/DashboardHomeComponent/DashboardHom
 import UserList from "./pages/Dashboard/UserList/UserList ";
 
 import HomeDashboardComponent from "./pages/Dashboard/DashboardHomeComponent/HomeDashboardComponent";
+import UserPayment from "./pages/Dashboard/UserPayment/UserPayment";
+import AgentDashboard from "./pages/Dashboard/AgentDashboard/AgentDashboard";
 
 function App() {
   return (
@@ -32,6 +34,15 @@ function App() {
               element={<HomeDashboardComponent />}
             ></Route>
             <Route path="/dashboard/user-list" element={<UserList />}></Route>
+
+            <Route
+              path="/dashboard/user-payment"
+              element={<UserPayment />}
+            ></Route>
+            <Route
+              path="/dashboard/agent-dashboard"
+              element={<AgentDashboard />}
+            ></Route>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

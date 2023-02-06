@@ -28,16 +28,40 @@ const DashboardMenus = () => {
   };
   return (
     <div className="sidebar-menus">
-      <div
-        onClick={() => handelNavigation("/")}
-        className={`sidebar-menu ${activeMenu === "/" ? "menu-active" : ""}`}
-      >
-        <span className="menu-icon">
-          <IoHome className="menuIcon" />
-        </span>
-        <p className="menu">Dashboard</p>
-      </div>
+      {user.role === "super-admin" && (
+        <div
+          onClick={() => handelNavigation("/")}
+          className={`sidebar-menu ${activeMenu === "/" ? "menu-active" : ""}`}
+        >
+          <span className="menu-icon">
+            <IoHome className="menuIcon" />
+          </span>
+          <p className="menu">Dashboard</p>
+        </div>
+      )}
 
+      {user.role === "user" && (
+        <div
+          onClick={() => handelNavigation("/user-payment")}
+          className={`sidebar-menu ${activeMenu === "/" ? "menu-active" : ""}`}
+        >
+          <span className="menu-icon">
+            <IoHome className="menuIcon" />
+          </span>
+          <p className="menu">User Payment</p>
+        </div>
+      )}
+      {user.role === "agent" && (
+        <div
+          onClick={() => handelNavigation("/agent-dashboard")}
+          className={`sidebar-menu ${activeMenu === "/" ? "menu-active" : ""}`}
+        >
+          <span className="menu-icon">
+            <IoHome className="menuIcon" />
+          </span>
+          <p className="menu">Agent Dashboard</p>
+        </div>
+      )}
       <div onClick={logout} className="sidebar-menu">
         <span className="menu-icon">
           <IoIosLogIn className="menuIcon" />

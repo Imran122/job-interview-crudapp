@@ -1,0 +1,10 @@
+.payform {
+    height: 100vh;
+    padding: 32px;
+    /*   display: flex;
+    flex-direction: column;
+    justify-content: center; */
+    background: #f2f7ff;
+    font-family: "Libre Franklin", Verdana, sans-serif;
+    color: gray;
+  }
