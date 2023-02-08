@@ -96,7 +96,31 @@ const UserListComponent = () => {
       }
     }
   };
+  //delete user code
+  const userDelete = (id) => {
+    setIsLoading(true);
+    fetch(`${process.env.REACT_APP_URL_API}/api/user-delete`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${getCookie("token")}`,
+      },
+      body: JSON.stringify({
+        id: id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          const remainingData = userList.filter(
+            (restRequest) => restRequest._id !== id
+          );
 
+          setUserList(remainingData);
+          setIsLoading(false);
+        }
+      });
+  };
   return (
     <div className="dashboard-main">
       <div>
@@ -130,6 +154,7 @@ const UserListComponent = () => {
                   <th>User Name</th>
                   <th>User Email</th>
                   <th>Role</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,6 +174,14 @@ const UserListComponent = () => {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.role}</td>
+                    <td>
+                      <button
+                        onClick={() => userDelete(user._id)}
+                        className="button-style danger-button me-2 me-xl-4"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
