@@ -1,8 +1,12 @@
 import Select from "react-select";
 import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
+import Modal from "react-bootstrap/Modal";
 import { getCookie } from "../../../utilities/helper";
 import "./UserList.css";
+import { GiConsoleController } from "react-icons/gi";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UserListComponent = () => {
   const customStyles = {
@@ -121,6 +125,67 @@ const UserListComponent = () => {
         }
       });
   };
+
+  //user Update
+  const [show, setShow] = useState(false);
+  const [userId, setUserId] = useState([]);
+  const handleClose = () => setShow(false);
+
+  const userUpdate = (id) => {
+    setShow(true);
+
+    fetch(`${process.env.REACT_APP_URL_API}/api/user-details/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        authorization: `Bearer ${getCookie("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setUserId(data));
+  };
+  console.log(userId);
+  const navigate = useNavigate();
+  const [updateuserData, setUpdateuserData] = useState([]);
+  const handleOnType = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    const newData = { ...updateuserData };
+    newData[field] = value;
+    setUpdateuserData(newData);
+  };
+
+  const updateFunction = (e) => {
+    setShow(false);
+    setIsLoading(true);
+
+    e.preventDefault();
+
+    const datas = {
+      id: userId._id,
+      name: updateuserData.name,
+      email: updateuserData.email,
+    };
+
+    const url = `${process.env.REACT_APP_URL_API}/api/user-update`;
+    //update data by call api
+    axios
+      .put(url, datas, {
+        headers: {
+          // "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${getCookie("token")}`,
+        },
+      })
+
+      .then((response) => {
+        if (response.status === 200) {
+          setIsLoading(false);
+          navigate("/dashboard", { replace: true });
+        } else if (response.status === 401) {
+          navigate("/", { replace: true });
+        }
+      });
+  };
   return (
     <div className="dashboard-main">
       <div>
@@ -177,10 +242,71 @@ const UserListComponent = () => {
                     <td>
                       <button
                         onClick={() => userDelete(user._id)}
-                        className="button-style danger-button me-2 me-xl-4"
+                        className=" me-2 me-xl-4"
                       >
                         Delete
                       </button>
+
+                      <div className="support-action">
+                        {/* <td>
+                                            <Form>
+                                                <Form.Check 
+                                                    type="switch"
+                                                    id="custom-switch"
+                                                />
+                                            </Form>
+                                        </td> */}
+                        <td>
+                          <span className="actionBtn">
+                            <button
+                              className="editBtn"
+                              onClick={() => userUpdate(user._id)}
+                            >
+                              Edit
+                            </button>
+                          </span>
+                        </td>
+                        <form onSubmit={updateFunction}>
+                          <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                              <Modal.Title>Edit data</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <form>
+                                <input
+                                  className="form-control mb-2"
+                                  name="email"
+                                  placeholder="Email"
+                                  onChange={handleOnType}
+                                  defaultValue={userId.email}
+                                />
+                                <input
+                                  className="form-control mb-2"
+                                  name="name"
+                                  placeholder="User name"
+                                  onChange={handleOnType}
+                                  defaultValue={userId.name}
+                                />
+
+                                <Modal.Footer>
+                                  {/* <button
+                                  className="closeBtn"
+                                  onClick={handleClose}
+                                >
+                                  Close
+                                </button> */}
+                                  <button
+                                    className="saveBtn"
+                                    onClick={updateFunction}
+                                  >
+                                    Save
+                                  </button>
+                                </Modal.Footer>
+                              </form>
+                            </Modal.Body>
+                          </Modal>
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 ))}
